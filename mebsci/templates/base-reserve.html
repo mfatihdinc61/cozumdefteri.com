@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Notebook</title>
+
+    <!-- Bootstrap CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Add this custom CSS to your <style> section or external CSS file */
+        .navbar-nav .nav-item {
+            margin-right: 15px; /* Adjust the value as needed */
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/">Solution Notebook</a>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto list-unstyled">
+                {% if user.is_authenticated %}
+
+                    <li class="nav-item mr-3 mt-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/posts/">Posts</a>
+                    </li>
+
+                    <li class="nav-item mr-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/create-post/">Create Post</a>
+                    </li>
+
+                    <li class="nav-item mr-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/profile/">Profile</a>
+                    </li>
+
+                    <li class="nav-item" style="padding-top: 8px; position: absolute; top:0; right:0">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link">Log Out</button>
+                        </form>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register/">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

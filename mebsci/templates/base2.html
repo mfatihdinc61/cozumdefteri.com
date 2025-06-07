@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çözüm Defteri</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Navbar custom styles */
+        .navbar-nav .nav-item {
+            margin-right: 15px;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            text-decoration: none;
+        }
+
+        @media (max-width: 800px) {
+            .navbar-nav.ml-auto.list-unstyled {
+                margin-top: 25px;
+            }
+        }
+
+        /* Custom styles for login page */
+        {% if request.get_full_path == "/kayitol/" %}
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+/*            background-image: url("{% static 'texture.png' %}");*/
+            background-image: url('/static/images/texture.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #556b2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .errorlist {
+            color: red;
+        }
+        
+
+        
+        
+        {% endif %}
+
+        /* Footer styles */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            padding: 5px 0;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        body{
+            background-image: url('static/texture.png');
+        }
+        
+        
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            function toggleButtonVisibility() {
+                if ($(window).width() > 800) {
+                    $('#thenavbutton').hide();
+                } else {
+                    $('#thenavbutton').show();
+                }
+            }
+            toggleButtonVisibility();
+            $(window).on('resize', toggleButtonVisibility);
+        });
+    </script>
+</head>
+
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/"> Çözüm Defteri</a>
+        <div class="navbar-toggler-right">
+            <button class="navbar-toggler hidden-sm-up" id="thenavbutton" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="position:absolute; top:10px; z-index:2">
+                <img src="{% static 'newbutton.png' %}" width="10px" height="10px">
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNav" style="position: relative; top: 0px; z-index: 1">
+            <ul class="navbar-nav ml-auto list-unstyled">
+                {% if user.is_authenticated %}
+                    <li class="nav-item mr-3 mt-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/gonderiler/">Gönderiler</a>
+                    </li>
+                    <li class="nav-item mr-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/gonderiyaz/">Gönderi Yaz</a>
+                    </li>
+                    <li class="nav-item mr-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/profil/">Profil</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item mr-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/kayitol/">Kayıt Ol</a>
+                    </li>
+                    <li class="nav-item mr-3" style="padding-top: 15px">
+                        <a class="nav-link" href="/">Giriş Yap</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div class="container-fluid text-right" style="position: absolute; top: 0; right: 0; z-index:3">
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link">Çıkış Yap</button>
+        </form>
+    {% endif %}
+</div>
+
+<footer class="footer">
+    Topçu Teğmen M. Fatih DİNÇ (2023)
+</footer>
+</body>
+</html>

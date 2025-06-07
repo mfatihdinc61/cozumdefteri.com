@@ -1,0 +1,127 @@
+site creation step by step
+
+0. create django custom user with these additonal fields: is_confirmed(boolean value), term(integer), name(charfield), surname(charfield) 
+
+1. create decent base.html with navbar 
+
+create a decent base.html with navbar which has the item 'Kay?t Ol' (which leads to /kayitol page) if user is not authenticated, if user is authenticated, visible navbar items should be 'Gonderiler'(which leads to /gonderiler page), 'Gonderi Yaz'(which leads to /gonderiyaz page), 'Profil'(which leads to /profil page).
+
+2. create a decent login page
+
+create a decent login page (with models.py, views.py, html with styling) in which username and password can be entered by user, in case username doesnt exist, it should display error: 'Boyle bir kullan?c? yok kardesim", if password is false "Parola/Sifre yanl?s girdin mebsci dostum"
+
+3. create a decent register page in which fields in customuser will be asked, user should be non-logged to view this page
+
+4. create a decent profil page (with css style), where all the fields of customuser of the user is displayed, login should be requried to view this page
+
+5. create a decent gonderiyaz page (with css style) in which the following fields (...in agenda...) and content are (which is in rich text editor format where images can be added and displayed) also include models.py and views.py for this page, login should be requried to view this page
+
+create a page where user can send a post with following fields in /gonderiyaz url:
+
+1. 'Basl?k' field for the title of the post should be in the form
+
+2. user should be able to select one of the following option from 'Gonderi Alan Turu' field: 'Sisoft', 'TSK Ag?', 'MSB Ag?', 'Terminal', 'Bilgisayar', 'Kamera', 'Telefon', 'Yaz?c?', 'Diger - MEBS', 'Diger - MEBS DISI'
+
+3. User should be able to choose one from 'Gonderi Turu', options are: 'Islem', 'Ar?za Cozum'
+
+4. User should be able to write content with rich text in which he/she can images between paragraphs as if he/she is writing in the word.
+
+5. username who created the post should be saved.
+
+
+
+
+6. create a decent gonderiler page (with css style) in which all the posts created in gonderiyaz section should be displayed by their title names as a list, also there should be a search bar to find the desired post in the list
+
+7. --correct style deficiencies-- yourself
+
+
+
+additions
+
+1. can you customize the registration form in which username, password, name, surname, donem will be taken from the user.
+
+2. how to customize the registration form so instead of 'username' label would be 'Kullan?c? Ad?', instead of password, label would be 'Sifre'
+
+3. There are some informative informations in the form related to how username should be, how password should be set, how to have them in turkish
+
+4. when a logged in user likes to log out, he should press the 'C?k?s Yap' button which is in right top corner of the page 
+
+5. can we add number of posts created by the user in profile page
+
+
+BEFORE PUBLISH ADDIITIONS:
+
+-- edit the post functionality -- 
+
+1. There should be edit the post functionality for the posts created by the user, 'Edit the post' option should be displayed on the post page 'post_detail.html' which is currently like this:
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content | safe }}</p>
+    </div>
+</div>
+{% endblock %}
+
+
+
+2. views.py of the app should be updated accordingly to satify the mentioned functionality, views.py is currently like this:
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render, redirect
+from .forms import PostForm
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+
+User = settings.AUTH_USER_MODEL
+
+
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.sender = request.user
+            post.save()
+            return redirect('login')  # Redirect to home page after post creation
+    else:
+        form = PostForm()
+    return render(request, 'create_post.html', {'form': form})
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Post
+
+
+@login_required
+def gonderiler(request):
+    posts = Post.objects.all()
+    query = request.GET.get('q')
+    if query:
+        posts = posts.filter(title__icontains=query)
+
+    if not query:
+        query = ""
+    return render(request, 'gonderiler.html', {'posts': posts, 'query': query})
+
+
+@login_required
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'post_detail.html', {'post': post})
+
+
+-- okunma say?s? functionality--
+
+1. in post_detail.html add info which shows how many times post is viewed.
+
+future 
+ 

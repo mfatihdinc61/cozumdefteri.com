@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content | safe }}</p>
+        {% if user.is_authenticated and user == post.sender %}
+            <a href="{% url 'edit_post' post.pk %}" class="btn btn-primary">Gönderiyi Değiştir</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

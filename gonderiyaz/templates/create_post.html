@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_confirmed == False %}
+<div class="alert alert-warning">
+    <h4>Henüz hesabın onaylanmadığı için içerikleri göremiyorsun, Fatih komutanı bir dürt, seni onasın</h4>
+</div>
+{% endif %}
+
+{% if user.is_confirmed == True %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>Gönderi Oluştur</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Gönder</button>
+        </form>
+    </div>
+</div>
+<br>
+
+
+{% endif %}
+{{ form.media }}
+{% endblock %}

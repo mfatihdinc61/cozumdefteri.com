@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="message-success">
+    <h2>Çıkış Yapıldı</h2>
+    <p>Yeniden giriş yapmak için <a href="{{ url_for('login') }}">buraya</a> tıklayın.</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2>Profil</h2>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Kullanıcı Adı</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>İsim</th>
+                    <td>{{ user.isim }}</td>
+                </tr>
+                <tr>
+                    <th>Soyisim</th>
+                    <td>{{ user.soyisim }}</td>
+                </tr>
+                <tr>
+                    <th>Dönem</th>
+                    <td>{{ user.donem }}</td>
+                </tr>
+                <tr>
+                    <th>Katkı Sayısı</th>
+                    <td>{{ post_count }}</td>
+                </tr>
+                <!-- Add more fields as needed -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

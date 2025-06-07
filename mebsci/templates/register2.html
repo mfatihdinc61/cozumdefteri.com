@@ -1,0 +1,9 @@
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.label }}
+        {{ form.field }}
+    </div>
+    <!-- Repeat the same pattern for other form fields -->
+    <button type="submit">Kayıt Ol</button>
+</form>
